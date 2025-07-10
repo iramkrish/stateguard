@@ -1,17 +1,30 @@
-export function shallowEqual(objA: any, objB: any): boolean {
+export function shallowEqual<T extends Record<PropertyKey, unknown>>(
+  objA: T,
+  objB: T
+): boolean {
   if (Object.is(objA, objB)) return true;
-  if (typeof objA !== 'object' || objA === null ||
-      typeof objB !== 'object' || objB === null) return false;
 
-  const keysA = Object.keys(objA);
-  const keysB = Object.keys(objB);
+  if (
+    typeof objA !== 'object' ||
+    objA === null ||
+    typeof objB !== 'object' ||
+    objB === null
+  ) {
+    return false;
+  }
+
+  const keysA = Reflect.ownKeys(objA);
+  const keysB = Reflect.ownKeys(objB);
 
   if (keysA.length !== keysB.length) return false;
 
-  for (let key of keysA) {
-    if (!Object.hasOwn(objB, key) || !Object.is(objA[key], objB[key])) {
+  for (const key of keysA) {
+    if (!Object.prototype.hasOwnProperty.call(objB, key)) return false;
+
+    if (!Object.is(objA[key as keyof T], objB[key as keyof T])) {
       return false;
     }
   }
+
   return true;
 }
