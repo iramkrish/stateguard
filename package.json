@@ -1,0 +1,30 @@
+{
+  "name": "react-structural-state",
+  "version": "1.0.0",
+  "description": "React hooks for structural sharing and optimized state updates.",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "author": "Ram Krishnan",
+  "license": "MIT",
+  "scripts": {
+    "dev": "tsup src/index.ts --watch",
+    "build": "tsup src/index.ts",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "14.0.0",
+    "@testing-library/react-hooks": "7.0.2",
+    "jsdom": "^24.0.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "tsup": "^7.0.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.2.0",
+    "vitest": "^1.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0"
+  }
+}
