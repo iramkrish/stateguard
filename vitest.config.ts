@@ -4,5 +4,9 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
+    coverage: {
+      include: ['src/hooks/**/*.ts', 'src/utils/**/*.ts'],
+      exclude: ['**/*.test.ts', '**/__tests__/**', 'src/index.ts'],
+    },
   },
 });
