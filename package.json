@@ -7,12 +7,31 @@
   "types": "dist/index.d.ts",
   "author": "Ram Krishnan",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iramkrish/react-structural-state.git"
+  },
+  "bugs": {
+    "url": "https://github.com/iramkrish/react-structural-state/issues"
+  },
+  "homepage": "https://github.com/iramkrish/react-structural-state#readme",
   "size-limit": [
     {
       "path": "dist/index.js",
       "limit": "2 KB"
     }
   ],
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
   "scripts": {
     "dev": "tsup src/index.ts --watch",
     "build": "tsup src/index.ts",
@@ -23,13 +42,8 @@
     "size": "size-limit",
     "release": "standard-version",
     "postinstall": "husky install",
-    "commit": "cz"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ]
+    "commit": "cz",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^19.8.1",
@@ -40,6 +54,7 @@
     "@testing-library/react-hooks": "7.0.2",
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "@typescript-eslint/parser": "^8.36.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "commitizen": "^4.3.1",
     "commitlint": "^19.8.1",
     "cz-conventional-changelog": "^3.3.0",
@@ -57,14 +72,9 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.36.0",
     "vite": "^5.2.0",
-    "vitest": "^1.0.0"
+    "vitest": "^3.2.4"
   },
   "peerDependencies": {
     "react": ">=17.0.0"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }
