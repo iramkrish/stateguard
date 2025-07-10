@@ -1,37 +1,81 @@
-# react-structural-state
+# React Structural State
 
-> React hooks for structural sharing and optimized state updates.
+> Lightweight React hooks for state updates with structural sharing
+
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## Features
 
-- Shallow or deep equality checks
-- Smart state updates, no unnecessary re-renders
-- TypeScript support
-- Lightweight and dependency-free (deep optional)
+- `useShallowEqualState`: Prevent unnecessary re-renders via shallow comparison.
+- `useDeepEqualState`: Prevent updates unless deeply unequal.
+- Optimized for performance
+- Tree-shakable and type-safe
 
-## Install
+## Installation
 
 ```bash
 npm install react-structural-state
+# or
+yarn add react-structural-state
 ```
 
 ## Usage
 
+### `useShallowEqualState`
+
 ```tsx
 import { useShallowEqualState } from 'react-structural-state';
 
-const [user, setUser] = useShallowEqualState({ name: '', age: 0 });
+const Component = () => {
+  const [user, setUser] = useShallowEqualState({
+    name: 'Ram',
+    role: 'Software Engineer',
+  });
 
-setUser({ name: 'Krish', age: 0 }); // won’t trigger re-render if equal
+  // No re-render if same shallow values
+  return <div>{user.name}</div>;
+};
+```
+
+### `useDeepEqualState`
+
+```tsx
+import { useDeepEqualState } from 'react-structural-state';
+
+const Component = () => {
+  const [data, setData] = useDeepEqualState({ nested: { value: 1 } });
+
+  return <pre>{JSON.stringify(data)}</pre>;
+};
 ```
 
 ## API
 
-### `useShallowEqualState<T>(initialState: T)`
-Only updates state if new value is shallowly different.
+### `useShallowEqualState<T>(initial: T)`
 
-### `useDeepEqualState<T>(initialState: T)`
-Uses deep comparison (via lodash.isequal).
+- Returns: `[state, setState]`
+- Updates state only if shallow comparison fails
+
+### `useDeepEqualState<T>(initial: T)`
+
+- Uses deep structural comparison to prevent re-renders
+
+## Testing
+
+```bash
+npm run test
+# for coverage
+npm run coverage
+```
+
+## Code Style
+
+Lint, format and commit rules are automated:
+
+```bash
+npm run lint
+npm run format
+```
 
 ## License
 
