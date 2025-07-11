@@ -1,7 +1,16 @@
 {
-  "name": "react-structural-state",
+  "name": "stateguard",
   "version": "1.0.0",
-  "description": "React hooks for structural sharing and optimized state updates.",
+  "description": "Lightweight React hooks for structural sharing and optimized state updates.",
+  "keywords": [
+    "react",
+    "state",
+    "hooks",
+    "shallow compare",
+    "deep compare",
+    "state management",
+    "performance"
+  ],
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "types": "dist/index.d.ts",
@@ -9,12 +18,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/iramkrish/react-structural-state.git"
+    "url": "https://github.com/iramkrish/stateguard.git"
   },
   "bugs": {
-    "url": "https://github.com/iramkrish/react-structural-state/issues"
+    "url": "https://github.com/iramkrish/stateguard/issues"
   },
-  "homepage": "https://github.com/iramkrish/react-structural-state#readme",
+  "homepage": "https://github.com/iramkrish/stateguard#readme",
   "size-limit": [
     {
       "path": "dist/index.js",

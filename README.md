@@ -1,6 +1,6 @@
-# React Structural State
+# stateguard
 
-> Lightweight React hooks for state updates with structural sharing
+> Lightweight React hooks for structural sharing and optimized state updates.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -14,9 +14,9 @@
 ## Installation
 
 ```bash
-npm install react-structural-state
+npm install stateguard
 # or
-yarn add react-structural-state
+yarn add stateguard
 ```
 
 ## Usage
@@ -24,7 +24,7 @@ yarn add react-structural-state
 ### `useShallowEqualState`
 
 ```tsx
-import { useShallowEqualState } from 'react-structural-state';
+import { useShallowEqualState } from 'stateguard';
 
 const Component = () => {
   const [user, setUser] = useShallowEqualState({
@@ -40,7 +40,7 @@ const Component = () => {
 ### `useDeepEqualState`
 
 ```tsx
-import { useDeepEqualState } from 'react-structural-state';
+import { useDeepEqualState } from 'stateguard';
 
 const Component = () => {
   const [data, setData] = useDeepEqualState({ nested: { value: 1 } });
