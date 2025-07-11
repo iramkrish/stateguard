@@ -14,7 +14,9 @@ start_spinner() {
   i=0
   (
     while true; do
-      printf "\r[%s] %s %s" "$step_number" "${SPINNER_CHARS[i++ % ${#SPINNER_CHARS[@]}}" "$msg"
+      local spinner_char="${SPINNER_CHARS[$((i % ${#SPINNER_CHARS[@]}))]}"
+      printf "\r[%s] %s %s" "$step_number" "$spinner_char" "$msg"
+      i=$((i + 1))
       sleep 0.1
     done
   ) &
@@ -41,11 +43,13 @@ stop_spinner_with_output() {
     echo -e "\a"
   fi
 
-  echo "--- Output ---"
-  cat "$output_file"
-  echo ""
+  if [ -s "$output_file" ]; then
+    echo "--- Output ---"
+    cat "$output_file"
+    echo ""
+  fi
 
-  rm -f "$output_file"
+  rm -f "$output_file" 2>/dev/null || true
   step_number=$((step_number + 1))
 
   [ "$exit_code" -eq 0 ]
@@ -53,12 +57,10 @@ stop_spinner_with_output() {
 
 abort_spinner() {
   local message="$1"
-
   if [ -n "$spinner_pid" ]; then
     kill "$spinner_pid" >/dev/null 2>&1 || true
     wait "$spinner_pid" 2>/dev/null || true
   fi
-
   clear_line
   printf "[%s] ✘ %s\n" "$step_number" "$message"
   echo -e "\a"
