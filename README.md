@@ -4,6 +4,8 @@
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ramkrishnan_stateguard&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ramkrishnan_stateguard)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=ramkrishnan_stateguard&metric=coverage)](https://sonarcloud.io/summary/new_code?id=ramkrishnan_stateguard)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=ramkrishnan_stateguard&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=ramkrishnan_stateguard)
 
 ## Features
 
