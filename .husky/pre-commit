@@ -1,35 +1,51 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 . "$(dirname -- "$0")/_/husky.sh"
+. "$(dirname -- "$0")/husky-utils.sh"
+
+total_steps=3
+
+timestamp=$(date +"%Y-%m-%d %H:%M:%S")
+branch=$(git rev-parse --abbrev-ref HEAD)
+author="$(git config user.name) <$(git config user.email)>"
+commit_msg=$(git log -1 --pretty=format:"%s")
 
 echo ""
-echo "🐶 [HUSKY] Pre-commit hook activated!"
-echo "🔍 Running test, lint, secrets check, and fortune wisdom..."
+echo "[husky] Pre-commit hook activated"
+echo "[info] Running test, lint, secrets check, and fortune wisdom..."
+echo ""
+echo "--- COMMIT CONTEXT -----------------"
+echo "Time:     $timestamp"
+echo "Branch:   $branch"
+echo "Author:   $author"
+echo "Message:  $commit_msg"
+echo "------------------------------------"
 echo ""
 
-if git diff --cached | grep -Ei 'apikey|secret|password' >/dev/null; then
-  echo "🚨 Possible secret detected in staged files. Please remove it before committing!"
-  exit 1
+# Step 1: Secret check
+start_spinner "Checking for secrets in staged files"
+if git diff --cached -- . ':(exclude).husky' | grep -Ei 'apikey|secret|password' >/dev/null; then
+  abort_spinner "Secrets detected in staged files. Please remove them." || exit 1
+else
+  stop_spinner 0 "No secrets found" "" || exit 1
 fi
 
-quotes=(
-  "Commit messages are love letters to your future self."
-  "Don't push broken code. Tests are your friends."
-  "Keep calm and write clean code."
-  "You aren't paid to write code. You're paid to add value."
-  "Code is like humor. When you have to explain it, it's bad."
-  "A good commit message is like a good book title: it tells you what to expect."
-  "Commit early, commit often, and commit with purpose."
-  "Your code is a reflection of you. Make it shine!"
-  "In the world of code, simplicity is the ultimate sophistication."
-)
-random_index=$((RANDOM % ${#quotes[@]}))
-echo "💡 ${quotes[$random_index]}"
+# Step 2: Tests
+start_spinner "Running tests"
+if [ "$VERBOSE" = true ]; then
+  npm test
+else
+  npm test >/dev/null 2>&1
+fi
+stop_spinner $? "Tests passed" "Tests failed. Fix them before committing." || exit 1
 
-echo "🧪 Step 1/2: Running tests..."
-npm test || { echo "🛑 Tests failed. Fix them before committing."; exit 1; }
-
-echo "🎨 Step 2/2: Running lint-staged..."
-npx lint-staged || { echo "🛑 Linting failed. Fix it before committing."; exit 1; }
+# Step 3: Lint
+start_spinner "Running lint-staged"
+if [ "$VERBOSE" = true ]; then
+  npx lint-staged
+else
+  npx lint-staged >/dev/null 2>&1
+fi
+stop_spinner $? "Lint passed" "Linting failed. Fix it before committing." || exit 1
 
 echo ""
-echo "✅ Pre-commit checks passed. You're cleared for liftoff! 🚀"
+echo "[done] All pre-commit checks passed."
