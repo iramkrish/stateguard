@@ -3,6 +3,7 @@
 > Lightweight React hooks for structural sharing and optimized state updates.
 
 [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=iramkrish_react-structural-state&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=iramkrish_react-structural-state)
 
 ## Features
 
