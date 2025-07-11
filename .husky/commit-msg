@@ -1,4 +1,33 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npx --no -- commitlint --edit "$1"
+msg=$(cat "$1")
+
+echo ""
+echo "📬 [HUSKY] Commit message hook engaged!"
+echo "🕵️  Validating commit message: \"$msg\""
+echo ""
+
+
+if echo "$msg" | grep -Ei 'fix typo|wip|stuff'; then
+  echo "🚨 Suspiciously lazy commit message detected!"
+  echo "🎵 You've been Rickrolled!"
+
+  # Cross-platform Rickroll
+  case "$(uname)" in
+    Darwin*) open "https://www.youtube.com/watch?v=dQw4w9WgXcQ" ;;
+    Linux*)  xdg-open "https://www.youtube.com/watch?v=dQw4w9WgXcQ" ;;
+    CYGWIN*|MINGW*|MSYS*) start "https://www.youtube.com/watch?v=dQw4w9WgXcQ" ;;
+  esac
+
+  exit 1
+fi
+
+echo "📏 Running commitlint..."
+npx --no -- commitlint --edit "$1" || {
+  echo "🛑 Commit message failed linting. Please fix it."
+  exit 1
+}
+
+echo ""
+echo "✅ Commit message passed all checks. Rock on! 🤘"

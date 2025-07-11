@@ -1,6 +1,28 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm run coverage
-npm run build
-npm run size
+echo ""
+echo "🚀 [HUSKY] Pre-push hook launched!"
+echo "🧪 Running coverage, build, and size check before lift-off..."
+echo ""
+
+echo "🔬 Step 1/3: Running test coverage..."
+npm run coverage || {
+  echo "🛑 Tests failed or coverage check did not pass. Push aborted."
+  exit 1
+}
+
+echo "🏗️  Step 2/3: Building the project..."
+npm run build || {
+  echo "🛑 Build failed. Fix errors before pushing."
+  exit 1
+}
+
+echo "📏 Step 3/3: Checking bundle size..."
+npm run size || {
+  echo "🛑 Bundle size check failed or is above threshold. Fix it."
+  exit 1
+}
+
+echo ""
+echo "✅ All pre-push checks passed! You're cleared for takeoff 🚀"

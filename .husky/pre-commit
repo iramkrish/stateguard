@@ -1,5 +1,35 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm test
-npx lint-staged
+echo ""
+echo "🐶 [HUSKY] Pre-commit hook activated!"
+echo "🔍 Running test, lint, secrets check, and fortune wisdom..."
+echo ""
+
+if git diff --cached | grep -Ei 'apikey|secret|password' >/dev/null; then
+  echo "🚨 Possible secret detected in staged files. Please remove it before committing!"
+  exit 1
+fi
+
+quotes=(
+  "Commit messages are love letters to your future self."
+  "Don't push broken code. Tests are your friends."
+  "Keep calm and write clean code."
+  "You aren't paid to write code. You're paid to add value."
+  "Code is like humor. When you have to explain it, it's bad."
+  "A good commit message is like a good book title: it tells you what to expect."
+  "Commit early, commit often, and commit with purpose."
+  "Your code is a reflection of you. Make it shine!"
+  "In the world of code, simplicity is the ultimate sophistication."
+)
+random_index=$((RANDOM % ${#quotes[@]}))
+echo "💡 ${quotes[$random_index]}"
+
+echo "🧪 Step 1/2: Running tests..."
+npm test || { echo "🛑 Tests failed. Fix them before committing."; exit 1; }
+
+echo "🎨 Step 2/2: Running lint-staged..."
+npx lint-staged || { echo "🛑 Linting failed. Fix it before committing."; exit 1; }
+
+echo ""
+echo "✅ Pre-commit checks passed. You're cleared for liftoff! 🚀"
