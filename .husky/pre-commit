@@ -2,17 +2,16 @@
 . "$(dirname -- "$0")/_/husky.sh"
 . "$(dirname -- "$0")/husky-utils.sh"
 
-total_steps=3
+echo ""
+echo "[husky] Pre-commit hook activated"
+echo "[info] Running tests, lint, secrets check, and wisdom..."
+echo ""
 
 timestamp=$(date +"%Y-%m-%d %H:%M:%S")
 branch=$(git rev-parse --abbrev-ref HEAD)
 author="$(git config user.name) <$(git config user.email)>"
 commit_msg=$(git log -1 --pretty=format:"%s")
 
-echo ""
-echo "[husky] Pre-commit hook activated"
-echo "[info] Running test, lint, secrets check, and fortune wisdom..."
-echo ""
 echo "--- COMMIT CONTEXT -----------------"
 echo "Time:     $timestamp"
 echo "Branch:   $branch"
@@ -24,28 +23,29 @@ echo ""
 # Step 1: Secret check
 start_spinner "Checking for secrets in staged files"
 if git diff --cached -- . ':(exclude).husky' | grep -Ei 'apikey|secret|password' >/dev/null; then
-  abort_spinner "Secrets detected in staged files. Please remove them." || exit 1
+  abort_spinner "Secrets detected in staged files" || exit 1
 else
-  stop_spinner 0 "No secrets found" "" || exit 1
+  stop_spinner_with_output 0 "No secrets found" "" /dev/null || exit 1
 fi
 
-# Step 2: Tests
+# Step 2: Run tests
 start_spinner "Running tests"
+tmp_out=$(mktemp)
 if [ "$VERBOSE" = true ]; then
-  npm test
+  npm run test 2>&1 | tee "$tmp_out"
 else
-  npm test >/dev/null 2>&1
+  npm run test > "$tmp_out" 2>&1
 fi
-stop_spinner $? "Tests passed" "Tests failed. Fix them before committing." || exit 1
+stop_spinner_with_output $? "Tests passed" "Tests failed" "$tmp_out" || exit 1
 
-# Step 3: Lint
+# Step 3: Run lint
 start_spinner "Running lint-staged"
+tmp_out=$(mktemp)
 if [ "$VERBOSE" = true ]; then
-  npx lint-staged
+  npx lint-staged 2>&1 | tee "$tmp_out"
 else
-  npx lint-staged >/dev/null 2>&1
+  npx lint-staged > "$tmp_out" 2>&1
 fi
-stop_spinner $? "Lint passed" "Linting failed. Fix it before committing." || exit 1
+stop_spinner_with_output $? "Lint passed" "Linting failed" "$tmp_out" || exit 1
 
-echo ""
 echo "[done] All pre-commit checks passed."

@@ -3,17 +3,14 @@
 . "$(dirname -- "$0")/husky-utils.sh"
 
 msg=$(cat "$1")
-total_steps=1
-
 echo ""
 echo "[husky] Commit message hook engaged"
 echo "[info] Validating commit message: \"$msg\""
 echo ""
 
-# Suspicious messages = Rickroll
 if echo "$msg" | grep -Ei 'fix typo|wip|stuff' >/dev/null; then
   echo "[warn] Suspiciously lazy commit message detected"
-  echo "[fun] Launching surprise..."
+  echo "[fun] Opening YouTube..."
 
   case "$(uname)" in
     Darwin*) open "https://www.youtube.com/watch?v=dQw4w9WgXcQ" ;;
@@ -24,14 +21,13 @@ if echo "$msg" | grep -Ei 'fix typo|wip|stuff' >/dev/null; then
   exit 1
 fi
 
-# Step 1: Commitlint
 start_spinner "Running commitlint"
+tmp_out=$(mktemp)
 if [ "$VERBOSE" = true ]; then
-  npx --no -- commitlint --edit "$1"
+  npx --no -- commitlint --edit "$1" 2>&1 | tee "$tmp_out"
 else
-  npx --no -- commitlint --edit "$1" >/dev/null 2>&1
+  npx --no -- commitlint --edit "$1" > "$tmp_out" 2>&1
 fi
-stop_spinner $? "Commit message valid" "Commit message failed linting" || exit 1
+stop_spinner_with_output $? "Commit message valid" "Commit message failed" "$tmp_out" || exit 1
 
-echo ""
-echo "[done] Commit message checks passed."
+echo "[done] Commit message check passed."
