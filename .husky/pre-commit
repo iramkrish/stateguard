@@ -3,3 +3,5 @@
 
 npm test
 npx lint-staged
+npm run build
+npm run size
