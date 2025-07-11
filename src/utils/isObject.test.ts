@@ -1,4 +1,4 @@
-import { isObject } from '../src/utils/isObject';
+import { isObject } from './isObject';
 
 describe('isObject', () => {
   it('returns true for plain objects', () => {

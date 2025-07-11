@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { deepEqual } from '../src/utils/deepEqual';
+import { deepEqual } from './deepEqual';
 
 describe('deepEqual', () => {
   it('returns true for primitives that are strictly equal', () => {

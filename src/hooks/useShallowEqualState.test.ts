@@ -1,5 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
-import { useShallowEqualState } from '../src/hooks/useShallowEqualState';
+import { useShallowEqualState } from './useShallowEqualState';
 
 describe('useShallowEqualState', () => {
   it('initializes with the given value', () => {
