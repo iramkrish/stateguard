@@ -1,5 +1,9 @@
-import { useCallback, useState } from 'react';
+import { useState, useCallback } from 'react';
 import { deepEqual } from '../utils/deepEqual';
+
+function isUpdater<T>(value: unknown): value is (prev: T) => T {
+  return typeof value === 'function';
+}
 
 export function useDeepEqualState<T>(
   initialValue: T
@@ -8,10 +12,8 @@ export function useDeepEqualState<T>(
 
   const setDeepState = useCallback((nextState: T | ((prev: T) => T)) => {
     setState((prev) => {
-      const next =
-        typeof nextState === 'function' ? nextState(prev) : nextState;
-
-      return deepEqual(prev, next) ? prev : next;
+      const value = isUpdater<T>(nextState) ? nextState(prev) : nextState;
+      return deepEqual(prev, value) ? prev : value;
     });
   }, []);
 
