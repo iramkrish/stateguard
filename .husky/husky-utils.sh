@@ -44,9 +44,9 @@ stop_spinner_with_output() {
   fi
 
   if [ -s "$output_file" ]; then
-    echo "--- Output ---"
+    echo "┏━▶ Output Stream"
     cat "$output_file"
-    echo ""
+    echo "┗━━━━━━━━━━━━━━━━━━"
   fi
 
   rm -f "$output_file" 2>/dev/null || true
