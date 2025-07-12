@@ -1,13 +1,11 @@
 import { useState, useCallback } from 'react';
-import { shallowEqualSafe } from '../utils/shallowEqual';
+import { shallowEqualSafe } from '../utils/__internal__/shallowEqual';
 
 function isUpdater<T>(value: unknown): value is (prev: T) => T {
   return typeof value === 'function';
 }
 
-export function useShallowEqualState<T>(
-  initialValue: T
-): [T, (value: T | ((prev: T) => T)) => void] {
+export function useShallowEqualState<T>(initialValue: T): [T, (value: T | ((prev: T) => T)) => void] {
   const [state, setState] = useState<T>(initialValue);
 
   const setShallowState = useCallback((nextState: T | ((prev: T) => T)) => {

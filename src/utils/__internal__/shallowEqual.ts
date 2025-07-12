@@ -1,9 +1,6 @@
 import { isObject } from './isObject';
 
-export function shallowEqual<T extends Record<PropertyKey, unknown>>(
-  objA: T,
-  objB: T
-): boolean {
+export function shallowEqual<T extends Record<PropertyKey, unknown>>(objA: T, objB: T): boolean {
   if (Object.is(objA, objB)) return true;
 
   const keysA = Reflect.ownKeys(objA);
